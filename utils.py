@@ -76,3 +76,18 @@ def mask(sequence, masked_index):
         for i in masked_index:
             masked_sequence = masked_sequence[:i] + 'X' + masked_sequence[i + 1:]
         return masked_sequence.replace('X', '<mask>')
+
+
+def mask_MSA(sequences, masked_index):
+    """
+    Replaces a character at the specified index with a mask token ('X').
+    
+    Parameters:
+        sequence (list): MSA.
+        masked_index (int): The index of the character to mask.
+
+    Returns:
+        sequence with mask.
+    """
+    return [sequence[:masked_index] + '<mask>' + sequence[masked_index + 1:] for sequence in sequences]
+    

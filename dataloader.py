@@ -18,7 +18,6 @@ def parse_a3m(file_path):
         Dictionary where keys are sequence headers and values are the corresponding 
         sequences from the file.
     """
-
     sequences = {}
     with open(file_path, "r") as file:
         header = None
@@ -37,6 +36,9 @@ def save_to_csv(sequences, output_path):
 
     Parameters
     ----------
+    sequences: dict
+        Protein sequences with headers as keys and sequences as values.
+
     output_path : str
         Path for the desired output file.
 
