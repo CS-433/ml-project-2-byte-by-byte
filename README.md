@@ -44,7 +44,7 @@ Note that the pBERT models presented here were specifically trained and evaluate
 
 #### Model Architecture
 Below is the architecture of the models used in this project:
-![Alt text] (https://github.com/CS-433/ml-project-2-byte-by-byte/blob/temp_branch/architecture.png)
+![Model Architecture](https://github.com/CS-433/ml-project-2-byte-by-byte/blob/temp_branch/architecture.png)
 
 # Getting started
 ## Dependencies
