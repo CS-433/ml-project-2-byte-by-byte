@@ -27,7 +27,7 @@ The models additionally offer insights into protein properties by learning patte
 2. [Getting started](#Getting-started)
 3. [Training](#training)
 4. [Inference](#inference)
-5. [Testing](#testing)
+5. [Evaluation](#evaluation)
 
 # Overview of the models
 
@@ -110,3 +110,94 @@ The organization of the folder should be as follows:
 The openfold folder should be at the same level as the `esm`, `input`, and `mlm_simple` folders in the project structure.
 
 # Training
+To train the models using your data and chosen configuration, follow these steps:
+
+#### 1. Modify the configuration: open the script in `pBERT_training_final.py` and update the config dictionary as needed:
+
+- `batch_size`: Number of sequences in each batch.
+- `dim`: Size of the embedding vector.
+- `n_heads`: Number of attention heads in the transformer layers.
+- `attn_dropout`: 
+- `mlp_dropout`:
+- `depth`: Number of transformer layers.
+- `max_len`: Maximum length of the sequences used for training.
+- `device`: Choose 'cuda' if you have a GPU available; otherwise, use 'cpu'.
+- `loss`: By default set to cross-entropy. However, we have also included an experimental BLOSUM loss function in the script. Note that the BLOSUM loss is not functional in this version of the model, but it is designed to be close to working. We have left the draft implementation in the repository for anyone who is interested in experimenting with it and potentially finding a solution. To use it, the `loss` should be set to 'BLOSUM'.
+
+#### 2.Model evaluation and checkpoint:
+Evaluation frequency can be modified in the script by modifying the parameter `N`.
+The best model during training will be saved in the directory mlm-baby-bert/ as BERT_best_model.pt (modifiable if needed).
+Any model can be reloaded for evaluation or predictions later using:
+```bash
+model.load_state_dict(torch.load('./mlm-baby-bert/BERT_best_model.pt'))
+```
+
+#### 3. Run the training:
+Run the script in your Python environment using:
+```bash
+python pBERT_training_final.py
+```
+
+#### 4. Monitoring Training:
+The training process will be displayed in the terminal with the current training loss, validation loss and elapsed time.
+
+# Inference
+After training the model, you can use it to make predictions on new protein sequences. The following instructions describe how to load the trained model, prepare the input data, and run inference to predict masked amino acids in protein sequences.
+
+#### 1. Modify the configuration and load the models: update the script in `pBERT_inference_final.py`
+As for the training the configuration should be set up according to your model.
+The pretrained model should then be loaded using:
+
+```bash
+saved_model = './mlm-baby-bert/model_chosen.pt'
+state_dict = torch.load(saved_model)
+model.load_state_dict(state_dict, strict=False)
+```
+
+#### 2. Input data
+The model can process both single query sequences and Multiple Sequence Alignments (MSAs). 
+The dataset as presented in the section `Data setup` should be loaded as `.csv` using:
+```bash
+train_dl, val_dl, test_dl = load_dataset("../input/your_data.csv", tokenizer, config)
+```
+
+#### 3. Run the inference
+Once the model is loaded, you can use it to predict masked residues in your protein sequences by running the script in your Python environment using:
+```bash
+python pBERT_inference_final.py
+```
+
+#### 4. Output
+After running the inference loop, the model will output the actual, masked, and predicted sequences for each protein. It will also print the accuracy of the model on the test dataset.
+
+# Evaluation
+To evaluate the models trained, used the following steps: 
+
+#### 1. Modify the configuration and load the models to evaluate: update the script in `evaluation.py`
+To evaluate the models, the script needs to be adjusted to include the appropriate configurations for each model. These configurations can be modified directly in the `load_model` function within the `evaluation.py` script.
+- Step 1.1: Adjust the configuration for each model to match the specific hyperparameters required for evaluation.
+- Step 1.2: Specify the file paths to the pre-trained models you want to evaluate within the `load_model` function.
+
+#### 2. Prepare the dataset on which the test will be performed
+The dataset of protein sequences is loaded from a `.csv` file specified in the `load_model` function. By default, the script uses `all_queries.csv`, but you can replace it with any dataset of your choice. 
+- Step 2.1: The script automatically splits the dataset into training and testing sets.
+- Step 2.2: The sequences are processed to mask random positions.
+- Step 2.3: The masked sequences are passed through each pre-trained model for inference.
+- Step 2.4: The model’s predictions are compared to the ground truth, and accuracy is calculated for each model.
+
+#### 3. Run the evaluation
+You can then run the evaluation using:
+```bash
+python evaluation.py
+```
+
+#### 4. Output
+The evaluation results will be saved to a CSV file (`model_evaluation.csv`). The CSV file contains the following columns:
+- Name: The model name.
+- Header: The header of the sequence.
+- Sequence: The original sequence.
+- Mask: The index of the masked amino acid.
+- Prediction: The model's prediction for the masked amino acid.
+- Label: The actual amino acid that was masked.
+- Correct: A binary value indicating if the prediction was correct.
+
