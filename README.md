@@ -42,6 +42,10 @@ The models additionally offer insights into protein properties by learning patte
 
 Note that the pBERT models presented here were specifically trained and evaluated for this project. However, all parameters are adjustable and can be fine-tuned according to your preferences.
 
+#### Model Architecture
+Below is the architecture of the models used in this project:
+![Alt text] (https://github.com/CS-433/ml-project-2-byte-by-byte/blob/temp_branch/architecture.png)
+
 # Getting started
 ## Dependencies
 To run the training, inference and testing of our models, the following dependencies must be installed:
