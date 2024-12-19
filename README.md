@@ -205,3 +205,6 @@ The evaluation results will be saved to a CSV file (`model_evaluation.csv`). The
 - Label: The actual amino acid that was masked.
 - Correct: A binary value indicating if the prediction was correct.
 
+#### 5. Visualization
+Visualization tools are provided in the notebook `evaluation.ipynb`
+
