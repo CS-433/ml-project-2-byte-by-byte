@@ -37,6 +37,9 @@ def save_to_csv(sequences, output_path):
 
     Parameters
     ----------
+    sequences: dict
+        Protein sequences with headers as keys and sequences as values.
+
     output_path : str
         Path for the desired output file.
 
