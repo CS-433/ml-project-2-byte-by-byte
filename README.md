@@ -1,12 +1,12 @@
-<p align="center" style="font-weight: bold; font-size: 28px;">
+<h1 align="center">
 Language model for protein design: predicting masked residues using sequences
-</p>
+</h1>
 <hr>
-<p align="center" style="font-weight: bold; font-size: 20px;">
+<h2 align="center">
 Guillaume Belissent, Charles Stockman, Victoire Ringler
-</p>
-<p align="center" style="font-style: italic; font-size: 16px;">
-Machine Learning CS-433, EPFL, Switzerland
+</h2>
+<p align="center">
+<em>Machine Learning CS-433, EPFL, Switzerland</em>
 </p>
 
 ### About the project
